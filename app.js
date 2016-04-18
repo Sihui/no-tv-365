@@ -4,6 +4,7 @@ var reactViews = require('express-react-views');
 var app = express();
 app.set('view engine', 'js');
 app.engine('js', reactViews.createEngine());
+app.use(express.static(__dirname + '/public'));
 
 app.get("/", function(request, response) {
   response.render('Html',{});

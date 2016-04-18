@@ -7,9 +7,12 @@ export default class Layout extends React.Component {
   render(){
     return (
       <div>
-        <Input />
-        <Comments />
+      Layout
       </div>
       );
   }
 }
+
+module.exports = Layout;
+//        <Input />
+//        <Comments />

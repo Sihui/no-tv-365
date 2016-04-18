@@ -11,7 +11,7 @@ module.exports = React.createClass({
           </head>
           <body>
             <div id="app">page showing</div>
-            <script type="text/javascript" src="client.min.js"></script>
+            <script src="/main.js"></script>
           </body>
         </html>
     );

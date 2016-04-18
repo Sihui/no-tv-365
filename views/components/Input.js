@@ -18,3 +18,5 @@ export default class Input extends React.Component{
       );
   }
 }
+
+module.exports = Input;
