@@ -10,11 +10,10 @@ module.exports = React.createClass({
             <title>No TV 365</title>
           </head>
           <body>
-            <div id="app">page showing</div>
+            <div id="app"></div>
             <script src="/main.js"></script>
           </body>
         </html>
     );
   }
-
 });

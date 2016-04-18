@@ -19796,7 +19796,8 @@ var Layout = (function (_React$Component) {
       return _react2["default"].createElement(
         "div",
         null,
-        "Layout"
+        _react2["default"].createElement(_Input2["default"], null),
+        _react2["default"].createElement(_pagesComments2["default"], null)
       );
     }
   }]);
@@ -19807,8 +19808,6 @@ var Layout = (function (_React$Component) {
 exports["default"] = Layout;
 
 module.exports = Layout;
-//        <Input />
-//        <Comments />
 module.exports = exports["default"];
 
 },{"../pages/Comments":169,"./Input":165,"react":162}],167:[function(require,module,exports){
