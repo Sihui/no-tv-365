@@ -35,7 +35,8 @@ passport.use(new FacebookStrategy({
   function(accessToken, refreshToken, profile, cb) {
     console.log('accessToken:'+accessToken);
     console.log('refreshToken:'+refreshToken);
-    console.log('profile:'+profile);
+    console.log('profile:'+profile.id);
+    console.log('profile:'+profile.displayName);
     cb(null, profile);
     }
 ));
@@ -54,17 +55,27 @@ app.get('/login/facebook',
 app.get('/login/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login/facebook' }),
   function(req, res) {
+    var session = require('crypto').createHash('sha1').update(req.user.id+Date.now()).digest('hex');
+    var user = {fb_id:req.user.id, name:req.user.displayName, session:session}
+    console.log("USER:" + user)
+    //save hash to session and database
+    MongoClient.connect(url, function(err, db) {
+      assert.equal(null, err);
+      dbInsertUser(user, db,  function() {
+        db.close();
+      })
+    });
     res.redirect('/');
   });
 
 app.get('/api/comments', function(req, res, next) {
-  console.log("inside /api/comments");
+  //console.log("inside /api/comments");
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-    console.log("Connected correctly to server");
+    // console.log("Connected correctly to server");
     dbGetAllComments(db,  function(comments) {
-      console.log("returned comments")
-      console.dir(comments);
+      // console.log("returned comments")
+      // console.dir(comments);
       db.close();
       res.send(comments);
     })
@@ -74,7 +85,7 @@ app.get('/api/comments', function(req, res, next) {
 app.post('/api/comments', function(req, res){
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-    console.log("Connected correctly to server");
+    // console.log("Connected correctly to server");
     dbInsertComment(req.body, db,  function() {
       db.close();
       res.send(req.body);
@@ -87,13 +98,38 @@ app.listen(port, function () {
   console.log('Example app listening on port 9000!');
 });
 
+var dbInsertUser = function(user, db, callback){
+  console.log("About to insert new user:" + user.fb_id + " name: "+ user.name + " session: "+ user.session)
+  var collection = db.collection('users');
+  collection.count({fb_id: user.fb_id}, function (err, count){
+      if(count>0){
+          console.log("user exists");
+          //document exists });
+          collection.updateOne({ fb_id : user.fb_id }
+            , { $set: { name:user.name, session:user.session} }, function(err, result) {
+            assert.equal(err, null);
+            assert.equal(1, result.result.n);
+            console.log("Updated user data");
+            callback(result);
+          });
+      }else{
+        collection.insertOne(user, function(err, result) {
+          assert.equal(err, null);
+          assert.equal(1, result.ops.length);
+          console.log("Inserted 1 user into the users collection");
+          callback(result);
+        });
+      }
+  });
+}
+
 var dbInsertComment = function(comment, db, callback) {
   var collection = db.collection('comments');
   // Insert some documents
   collection.insertOne(comment, function(err, result) {
     assert.equal(err, null);
     assert.equal(1, result.ops.length);
-    console.log("Inserted 1 comment into the comment collection");
+    // console.log("Inserted 1 comment into the comment collection");
     callback(result);
   });
 }
@@ -101,8 +137,8 @@ var dbInsertComment = function(comment, db, callback) {
 var dbGetAllComments = function(db, callback) {
     var collection = db.collection('comments');
     collection.find({}).toArray(function(err, docs){
-      console.log("Found the following records");
-      console.dir(docs);
+      // console.log("Found the following records");
+      // console.dir(docs);
       callback(docs);
     })
   }
