@@ -19610,6 +19610,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createComment = createComment;
 exports.deleteComment = deleteComment;
+exports.getAllComments = getAllComments;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19628,6 +19629,21 @@ function deleteComment(id) {
   _dispatcher2["default"].dispatch({
     type: "DELETE_COMMENT",
     id: id
+  });
+}
+
+function getAllComments() {
+  $.ajax({
+    type: 'GET',
+    url: '/api/comments'
+  }).done(function (comments) {
+    console.log("get all success, comments:" + comments);
+    _dispatcher2["default"].dispatch({
+      type: "GET_ALL_COMMENTS",
+      comments: comments
+    });
+  }).fail(function (jqXhr) {
+    console.log("get all fail");
   });
 }
 
@@ -19666,12 +19682,12 @@ var Comment = (function (_React$Component) {
     value: function render() {
       var _props = this.props;
       var date = _props.date;
-      var comment = _props.comment;
+      var text = _props.text;
 
       return _react2["default"].createElement(
         "li",
         null,
-        comment,
+        text,
         " - ",
         date
       );
@@ -19840,6 +19856,8 @@ var _componentsLayout = require("./components/Layout");
 var _componentsLayout2 = _interopRequireDefault(_componentsLayout);
 
 var app = document.getElementById("app");
+//var comments = app.props.comments;
+//console.log("in main,js comments: " + comments);
 _reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], null), app);
 
 },{"./components/Layout":166,"react":162,"react-dom":6}],169:[function(require,module,exports){
@@ -19888,7 +19906,7 @@ var Comments = (function (_React$Component) {
     _get(Object.getPrototypeOf(Comments.prototype), "constructor", this).call(this);
     this.getComments = this.getComments.bind(this);
     this.state = {
-      comments: _storesCommentStore2["default"].getAll()
+      comments: _storesCommentStore2["default"].getAllComments()
     };
   }
 
@@ -19906,7 +19924,7 @@ var Comments = (function (_React$Component) {
     key: "getComments",
     value: function getComments() {
       this.setState({
-        comments: _storesCommentStore2["default"].getAll()
+        comments: _storesCommentStore2["default"].getAllComments()
       });
     }
   }, {
@@ -19947,6 +19965,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19959,6 +19979,10 @@ var _dispatcher = require("../dispatcher");
 
 var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
+var _actionsCommentActions = require("../actions/CommentActions");
+
+var CommentActions = _interopRequireWildcard(_actionsCommentActions);
+
 var CommentStore = (function (_EventEmitter) {
   _inherits(CommentStore, _EventEmitter);
 
@@ -19966,12 +19990,19 @@ var CommentStore = (function (_EventEmitter) {
     _classCallCheck(this, CommentStore);
 
     _get(Object.getPrototypeOf(CommentStore.prototype), "constructor", this).call(this);
-    this.comments = [{ date: "Mar14", comment: "1", key: "1" }, { date: "Mar14", comment: "2", key: "2" }, { date: "Mar14", comment: "3", key: "3" }, { date: "Mar14", comment: "4", key: "4" }];
+    this.comments = [];
+    CommentActions.getAllComments();
   }
 
   _createClass(CommentStore, [{
-    key: "getAll",
-    value: function getAll() {
+    key: "assignComments",
+    value: function assignComments(comments) {
+      this.comments = comments;
+      this.emit("change");
+    }
+  }, {
+    key: "getAllComments",
+    value: function getAllComments() {
       return this.comments;
     }
   }, {
@@ -19991,9 +20022,11 @@ var CommentStore = (function (_EventEmitter) {
     value: function handleActions(action) {
       switch (action.type) {
         case "CREATE_COMMENT":
-          {
-            this.createComment(action.comment);
-          }
+          this.createComment(action.comment);
+          break;
+        case "GET_ALL_COMMENTS":
+          this.assignComments(action.comments);
+          break;
       }
     }
   }]);
@@ -20010,5 +20043,5 @@ window.commentStore = commentStore;
 //commentStore.on("change", )
 module.exports = exports["default"];
 
-},{"../dispatcher":167,"events":1}]},{},[168])(168)
+},{"../actions/CommentActions":163,"../dispatcher":167,"events":1}]},{},[168])(168)
 });

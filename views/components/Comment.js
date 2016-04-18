@@ -7,10 +7,10 @@ export default class Comment extends React.Component{
   }
 
   render(){
-    const { date, comment } = this.props;
+    const { date, text } = this.props;
 
     return(
-      <li>{comment} - {date}</li>
+      <li>{text} - {date}</li>
       );
   }
 }
