@@ -18,20 +18,21 @@
     "crypto": "0.0.3",
     "express": "^4.13.4",
     "express-react-views": "^0.10.1",
+    "express-session": "^1.13.0",
     "flux": "^2.1.1",
     "mongodb": "^2.1.16",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
+    "session-file-store": "^0.2.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.1"
   },
-  "devDependencies": {},
   "scripts": {
     "dev": "webpack-dev-server --content-base src --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
+    "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && nodemon app.js"
   },
   "author": "",
   "license": "ISC"

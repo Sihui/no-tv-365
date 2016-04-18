@@ -3,6 +3,7 @@ var reactViews = require('express-react-views');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./configuration/config');
+var session = require('express-session')
 
 var app = express();
 app.set('view engine', 'js');
@@ -10,10 +11,16 @@ app.engine('js', reactViews.createEngine());
 app.use(express.static(__dirname + '/public'));
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(session({
+  secret: config.session_secret,
+  cookie: { maxAge: 60000,httpOnly: false },
+  resave: false,
+  saveUninitialized: false,
+}))
 
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');
@@ -24,6 +31,10 @@ var url = 'mongodb://localhost:27017/myproject';
 const comment = {fb_id:1234, text: "good job!", date: Date.now(), fb_pic:"111"}
 
 app.get("/", function(request, response) {
+  if (request.session.fb_info){
+    console.log("session found! : "+ request.session.fb_info);
+  }
+  console.log("session : "+ request.session);
   response.render('Html');
 });
 
@@ -33,10 +44,6 @@ passport.use(new FacebookStrategy({
     callbackURL: config.callback_url
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log('accessToken:'+accessToken);
-    console.log('refreshToken:'+refreshToken);
-    console.log('profile:'+profile.id);
-    console.log('profile:'+profile.displayName);
     cb(null, profile);
     }
 ));
@@ -62,11 +69,22 @@ app.get('/login/facebook/callback',
     MongoClient.connect(url, function(err, db) {
       assert.equal(null, err);
       dbInsertUser(user, db,  function() {
+        console.log("save seesion");
+        req.session.fb_info = session;
+        console.log("session: " + req.session.fb_info);
         db.close();
+        res.redirect('/');
       })
     });
-    res.redirect('/');
+
   });
+
+app.get('/logout', function(req, res){
+  console.log('logging out');
+  req.logout();
+  req.session.fb_info = null;
+  res.redirect('/');
+});
 
 app.get('/api/comments', function(req, res, next) {
   //console.log("inside /api/comments");
