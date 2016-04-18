@@ -1,9 +1,14 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from "react";
+import ReactDOM from "react-dom";
 
-module.exports = function (data, containerId) {
-  //var container = document.getElementById(containerId || 'content');
-  ReactDOM.render(
-    <h1>in main.js</h1>
-  );
+import Layout from "./components/Layout";
+
+
+
+module.exports = function () {
+  console.log("in client.js");
+
+  const app = document.getElementById("app")
+  ReactDOM.render(<h1>yyyyy</h1>, app);
 };
+//<Layout/>
