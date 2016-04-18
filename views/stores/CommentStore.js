@@ -1,38 +1,36 @@
 import { EventEmitter } from "events";
 
 import dispatcher from "../dispatcher";
+import * as CommentActions from "../actions/CommentActions";
 
 class CommentStore extends EventEmitter {
   constructor() {
     super()
-    this.comments = [
-     {date:"Mar14", comment:"1", key:"1"},
-     {date:"Mar14", comment:"2", key:"2"},
-     {date:"Mar14", comment:"3", key:"3"},
-     {date:"Mar14", comment:"4", key:"4"},
-    ]
+    this.comments = []
+    CommentActions.getAllComments();
   }
 
-  getAll(){
+  assignComments(comments){
+    this.comments = comments;
+    this.emit("change");
+  }
+
+  getAllComments(){
     return this.comments;
   }
 
   createComment(comment){
-    const id = Date.now();
-
-    this.comments.push({
-      comment,
-      id,
-      date: "April 15"
-    })
-    this.emit("change");
+    CommentActions.getAllComments();
   }
 
   handleActions(action) {
     switch(action.type){
-      case "CREATE_COMMENT": {
+      case "CREATE_COMMENT":
         this.createComment(action.comment);
-      }
+        break;
+      case "GET_ALL_COMMENTS":
+        this.assignComments(action.comments);
+        break;
     }
   }
 

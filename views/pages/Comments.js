@@ -10,7 +10,7 @@ export default class Comments extends React.Component{
     super();
     this.getComments = this.getComments.bind(this);
     this.state = {
-      comments: CommentStore.getAll(),
+      comments: CommentStore.getAllComments(),
     };
   }
 
@@ -24,7 +24,7 @@ export default class Comments extends React.Component{
 
   getComments() {
     this.setState({
-      comments: CommentStore.getAll(),
+      comments: CommentStore.getAllComments(),
     });
   }
 
