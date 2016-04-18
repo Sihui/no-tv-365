@@ -19603,30 +19603,42 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":30}],163:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports.createComment = createComment;
 exports.deleteComment = deleteComment;
 exports.getAllComments = getAllComments;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _dispatcher = require("../dispatcher");
 
 var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
 function createComment(comment) {
-  _dispatcher2["default"].dispatch({
-    type: "CREATE_COMMENT",
-    comment: comment
+  $.ajax({
+    type: 'POST',
+    url: '/api/comments',
+    data: {
+      fb_id: 1234,
+      text: comment,
+      date: Date.now(),
+      fb_pic: '111' }
+  }).done(function () {
+    console.log("create comment success");
+    _dispatcher2['default'].dispatch({
+      type: "CREATE_COMMENT"
+    });
+  }).fail(function (jqXhr) {
+    console.log("create comment fail");
   });
 }
 
 function deleteComment(id) {
-  _dispatcher2["default"].dispatch({
+  _dispatcher2['default'].dispatch({
     type: "DELETE_COMMENT",
     id: id
   });
@@ -19638,7 +19650,7 @@ function getAllComments() {
     url: '/api/comments'
   }).done(function (comments) {
     console.log("get all success, comments:" + comments);
-    _dispatcher2["default"].dispatch({
+    _dispatcher2['default'].dispatch({
       type: "GET_ALL_COMMENTS",
       comments: comments
     });
@@ -20008,14 +20020,7 @@ var CommentStore = (function (_EventEmitter) {
   }, {
     key: "createComment",
     value: function createComment(comment) {
-      var id = Date.now();
-
-      this.comments.push({
-        comment: comment,
-        id: id,
-        date: "April 15"
-      });
-      this.emit("change");
+      CommentActions.getAllComments();
     }
   }, {
     key: "handleActions",

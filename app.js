@@ -6,6 +6,11 @@ app.set('view engine', 'js');
 app.engine('js', reactViews.createEngine());
 app.use(express.static(__dirname + '/public'));
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');
 
@@ -15,14 +20,6 @@ var url = 'mongodb://localhost:27017/myproject';
 const comment = {fb_id:1234, text: "good job!", date: Date.now(), fb_pic:"111"}
 
 app.get("/", function(request, response) {
-  // Use connect method to connect to the Server
-  // MongoClient.connect(url, function(err, db) {
-  //   assert.equal(null, err);
-  //   console.log("Connected correctly to server");
-  //   dbInsertComment(comment, db,  function() {
-  //     db.close();
-  //   })
-  // });
   response.render('Html');
 });
 
@@ -36,6 +33,17 @@ app.get('/api/comments', function(req, res, next) {
       console.dir(comments);
       db.close();
       res.send(comments);
+    })
+  });
+});
+
+app.post('/api/comments', function(req, res){
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+    console.log("Connected correctly to server");
+    dbInsertComment(req.body, db,  function() {
+      db.close();
+      res.send(req.body);
     })
   });
 });

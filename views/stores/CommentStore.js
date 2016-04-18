@@ -20,14 +20,7 @@ class CommentStore extends EventEmitter {
   }
 
   createComment(comment){
-    const id = Date.now();
-
-    this.comments.push({
-      comment,
-      id,
-      date: "April 15"
-    })
-    this.emit("change");
+    CommentActions.getAllComments();
   }
 
   handleActions(action) {

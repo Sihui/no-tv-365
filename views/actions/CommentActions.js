@@ -1,10 +1,24 @@
 import dispatcher from "../dispatcher";
 
 export function createComment(comment) {
-  dispatcher.dispatch({
-    type: "CREATE_COMMENT",
-    comment,
-  });
+  $.ajax({
+    type: 'POST',
+    url: '/api/comments',
+    data: {
+    fb_id: 1234,
+    text: comment,
+    date: Date.now(),
+    fb_pic: '111' }
+  })
+    .done(() => {
+      console.log("create comment success")
+      dispatcher.dispatch({
+        type: "CREATE_COMMENT"
+      });
+    })
+    .fail((jqXhr) => {
+      console.log("create comment fail");
+    });
 }
 
 export function deleteComment(id) {
