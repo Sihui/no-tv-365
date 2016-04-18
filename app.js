@@ -1,5 +1,8 @@
 var express = require("express");
 var reactViews = require('express-react-views');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var config = require('./configuration/config');
 
 var app = express();
 app.set('view engine', 'js');
@@ -9,7 +12,8 @@ app.use(express.static(__dirname + '/public'));
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');
@@ -22,6 +26,36 @@ const comment = {fb_id:1234, text: "good job!", date: Date.now(), fb_pic:"111"}
 app.get("/", function(request, response) {
   response.render('Html');
 });
+
+passport.use(new FacebookStrategy({
+    clientID: config.facebook_app_id,
+    clientSecret: config.facebook_app_secret,
+    callbackURL: config.callback_url
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log('accessToken:'+accessToken);
+    console.log('refreshToken:'+refreshToken);
+    console.log('profile:'+profile);
+    cb(null, profile);
+    }
+));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+app.get('/login/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/login/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login/facebook' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 
 app.get('/api/comments', function(req, res, next) {
   console.log("inside /api/comments");

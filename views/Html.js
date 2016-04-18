@@ -13,6 +13,9 @@ module.exports = React.createClass({
             <title>No TV 365</title>
           </head>
           <body>
+            <form action = "/login/facebook" method = "post">
+              <input type="submit" name="Login" value="Login" />
+            </form>
             <div id="app" comments={comments}></div>
             <script src="/main.js"></script>
           </body>
