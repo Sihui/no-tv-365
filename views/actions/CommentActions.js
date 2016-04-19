@@ -1,14 +1,14 @@
 import dispatcher from "../dispatcher";
 
-export function createComment(comment) {
+export function createComment(text, name, fb_id) {
   $.ajax({
     type: 'POST',
     url: '/api/comments',
     data: {
-    fb_id: 1234,
-    text: comment,
-    date: Date.now(),
-    fb_pic: '111' }
+    fb_id: fb_id,
+    text: text,
+    name: name,
+    date: Date.now()}
   })
     .done(() => {
       console.log("create comment success")

@@ -23,6 +23,7 @@
     "mongodb": "^2.1.16",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
+    "path": "^0.12.7",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "session-file-store": "^0.2.0",
@@ -32,7 +33,7 @@
   "scripts": {
     "dev": "webpack-dev-server --content-base src --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && nodemon app.js"
+    "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
   },
   "author": "",
   "license": "ISC"

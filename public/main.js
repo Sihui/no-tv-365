@@ -19618,15 +19618,15 @@ var _dispatcher = require("../dispatcher");
 
 var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-function createComment(comment) {
+function createComment(text, name, fb_id) {
   $.ajax({
     type: 'POST',
     url: '/api/comments',
     data: {
-      fb_id: 1234,
-      text: comment,
-      date: Date.now(),
-      fb_pic: '111' }
+      fb_id: fb_id,
+      text: text,
+      name: name,
+      date: Date.now() }
   }).done(function () {
     console.log("create comment success");
     _dispatcher2['default'].dispatch({
@@ -19697,11 +19697,17 @@ var Comment = (function (_React$Component) {
       var text = _props.text;
 
       return _react2["default"].createElement(
-        "li",
-        null,
-        text,
-        " - ",
-        date
+        "div",
+        { className: "card" },
+        _react2["default"].createElement(
+          "div",
+          { className: "card-block" },
+          _react2["default"].createElement(
+            "p",
+            { className: "card-text" },
+            text
+          )
+        )
       );
     }
   }]);
@@ -19753,20 +19759,48 @@ var Input = (function (_React$Component) {
   _createClass(Input, [{
     key: "createComment",
     value: function createComment() {
-      var newComment = document.getElementById('new-comment').value;
-      CommentActions.createComment(newComment);
+      var text = document.getElementById('new-comment').value;
+      var name = this.props.name;
+      var fb_id = this.props.fb_id;
+      CommentActions.createComment(text, name, fb_id);
     }
   }, {
     key: "render",
     value: function render() {
+
+      var name = this.props.name;
+      var fb_id = this.props.fb_id;
+
+      if (name !== "undefined") {
+        var c_class = "";
+        var textarea_style = {};
+        var login_msg = "login_hide";
+      } else {
+        var c_class = "blur";
+        var textarea_style = { pointerEvents: "none" };
+        var login_msg = "login_show";
+      }
       return _react2["default"].createElement(
         "div",
-        null,
-        _react2["default"].createElement("input", { id: "new-comment" }),
+        { className: "comment_div" },
         _react2["default"].createElement(
-          "button",
-          { onClick: this.createComment.bind(this) },
-          "Create!"
+          "div",
+          { className: login_msg },
+          _react2["default"].createElement(
+            "a",
+            { href: "/login/facebook" },
+            _react2["default"].createElement("img", { className: "login_img", src: "/imgs/facebook-login-blue.png" })
+          )
+        ),
+        _react2["default"].createElement(
+          "div",
+          { className: c_class },
+          _react2["default"].createElement("textarea", { id: "new-comment", style: textarea_style, className: "form-control comment-area" }),
+          _react2["default"].createElement(
+            "button",
+            { onClick: this.createComment.bind(this), className: "btn btn-primary", type: "button" },
+            "Comment"
+          )
         )
       );
     }
@@ -19778,6 +19812,7 @@ var Input = (function (_React$Component) {
 exports["default"] = Input;
 
 module.exports = Input;
+//,backgroundColor:" #b3b3cc"
 module.exports = exports["default"];
 
 },{"../actions/CommentActions":163,"react":162}],166:[function(require,module,exports){
@@ -19821,10 +19856,13 @@ var Layout = (function (_React$Component) {
   _createClass(Layout, [{
     key: "render",
     value: function render() {
+
+      var name = this.props.name;
+      var fb_id = this.props.fb_id;
       return _react2["default"].createElement(
         "div",
         null,
-        _react2["default"].createElement(_Input2["default"], null),
+        _react2["default"].createElement(_Input2["default"], { name: name, fb_id: fb_id }),
         _react2["default"].createElement(_pagesComments2["default"], null)
       );
     }
@@ -19868,9 +19906,12 @@ var _componentsLayout = require("./components/Layout");
 var _componentsLayout2 = _interopRequireDefault(_componentsLayout);
 
 var app = document.getElementById("app");
+var data = app.getAttribute("data").split("|");
+var name = data[0];
+var fb_id = data[1];
 //var comments = app.props.comments;
 //console.log("in main,js comments: " + comments);
-_reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], null), app);
+_reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], { name: name, fb_id: fb_id }), app);
 
 },{"./components/Layout":166,"react":162,"react-dom":6}],169:[function(require,module,exports){
 "use strict";
@@ -19949,11 +19990,7 @@ var Comments = (function (_React$Component) {
       return _react2["default"].createElement(
         "div",
         null,
-        _react2["default"].createElement(
-          "ul",
-          null,
-          Comments
-        )
+        Comments
       );
     }
   }]);

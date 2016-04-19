@@ -10,7 +10,11 @@ export default class Comment extends React.Component{
     const { date, text } = this.props;
 
     return(
-      <li>{text} - {date}</li>
+      <div className="card">
+        <div className="card-block">
+          <p className="card-text">{text}</p>
+        </div>
+      </div>
       );
   }
 }

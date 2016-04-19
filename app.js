@@ -4,11 +4,12 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./configuration/config');
 var session = require('express-session')
+var path = require('path');
 
 var app = express();
 app.set('view engine', 'js');
 app.engine('js', reactViews.createEngine());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -33,9 +34,17 @@ const comment = {fb_id:1234, text: "good job!", date: Date.now(), fb_pic:"111"}
 app.get("/", function(request, response) {
   if (request.session.fb_info){
     console.log("session found! : "+ request.session.fb_info);
+    MongoClient.connect(url, function(err, db) {
+      assert.equal(null, err);
+      db.collection('users').findOne({session: request.session.fb_info}, function(err, user) {
+        console.log("user in db: " + user.name);
+        db.close();
+        response.render('Html', {fb_id:user.fb_id, name:user.name});
+      });
+    });
+  }else{
+    response.render('Html');
   }
-  console.log("session : "+ request.session);
-  response.render('Html');
 });
 
 passport.use(new FacebookStrategy({
