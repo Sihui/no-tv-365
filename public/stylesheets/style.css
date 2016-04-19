@@ -42,6 +42,7 @@
 a.menu_links { cursor: pointer; }
 textarea.form-control {
     height: 200px !important;
+    font-size: 21px;
 }
 input, button, select, textarea {
     float: right !important;
@@ -54,6 +55,7 @@ input, button, select, textarea {
     background-color: #fff;
     border: 1px solid #e5e5e5;
     border-radius: .25rem;
+    overflow: auto;
 }
 .card-block {
     padding: 1.25rem;
@@ -62,4 +64,7 @@ input, button, select, textarea {
 .comment_div{
   overflow: auto;
   margin-bottom: 15px;
+}
+.card-name{
+  float: right;
 }

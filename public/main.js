@@ -19603,22 +19603,26 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":30}],163:[function(require,module,exports){
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createComment = createComment;
 exports.deleteComment = deleteComment;
 exports.getAllComments = getAllComments;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _dispatcher = require("../dispatcher");
 
 var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
 function createComment(text, name, fb_id) {
+  var d = new Date();
+  var formatted_date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+  var time = d.getHours() + ":" + d.getMinutes();
+
   $.ajax({
     type: 'POST',
     url: '/api/comments',
@@ -19626,10 +19630,12 @@ function createComment(text, name, fb_id) {
       fb_id: fb_id,
       text: text,
       name: name,
-      date: Date.now() }
+      tstp: Date.now(),
+      date: formatted_date,
+      time: time }
   }).done(function () {
     console.log("create comment success");
-    _dispatcher2['default'].dispatch({
+    _dispatcher2["default"].dispatch({
       type: "CREATE_COMMENT"
     });
   }).fail(function (jqXhr) {
@@ -19638,7 +19644,7 @@ function createComment(text, name, fb_id) {
 }
 
 function deleteComment(id) {
-  _dispatcher2['default'].dispatch({
+  _dispatcher2["default"].dispatch({
     type: "DELETE_COMMENT",
     id: id
   });
@@ -19650,7 +19656,7 @@ function getAllComments() {
     url: '/api/comments'
   }).done(function (comments) {
     console.log("get all success, comments:" + comments);
-    _dispatcher2['default'].dispatch({
+    _dispatcher2["default"].dispatch({
       type: "GET_ALL_COMMENTS",
       comments: comments
     });
@@ -19694,8 +19700,18 @@ var Comment = (function (_React$Component) {
     value: function render() {
       var _props = this.props;
       var date = _props.date;
+      var time = _props.time;
       var text = _props.text;
+      var name = _props.name;
+      var fb_id = _props.fb_id;
 
+      console.log("name:" + name);
+      var imgurl = "http://graph.facebook.com/" + fb_id + "/picture?type=square";
+      var formatted_name = name;
+      if (name) {
+        var split_name = name.split(" ");
+        if (split_name.length >= 2) formatted_name = split_name[0] + " " + split_name[split_name.length - 1][0] + '.';
+      }
       return _react2["default"].createElement(
         "div",
         { className: "card" },
@@ -19706,6 +19722,18 @@ var Comment = (function (_React$Component) {
             "p",
             { className: "card-text" },
             text
+          ),
+          _react2["default"].createElement(
+            "p",
+            { className: "card-name" },
+            "-",
+            formatted_name,
+            " @",
+            time,
+            " ",
+            date,
+            " ",
+            _react2["default"].createElement("img", { className: "thubmnail", src: imgurl })
           )
         )
       );
