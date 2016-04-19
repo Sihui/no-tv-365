@@ -44,9 +44,8 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "start": "node app.js",
     "heroku-prebuild": "npm install",
     "dev": "webpack-dev-server --content-base src --inline --hot",
-    "dev2": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
+    "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
   }
 }

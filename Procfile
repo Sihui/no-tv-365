@@ -1,1 +1,1 @@
-web: node app.js
+web: browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js

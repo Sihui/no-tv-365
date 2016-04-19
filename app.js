@@ -2,11 +2,14 @@ var express = require("express");
 var reactViews = require('express-react-views');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
-//var config = require('./configuration/config');
 var session = require('express-session')
 var path = require('path');
 var csv = require('csv-parser')
 var fs = require('fs')
+
+if(!process.env.SSECRET){
+  var config = require('./configuration/config');
+}
 
 var app = express();
 app.set('view engine', 'js');
@@ -71,7 +74,7 @@ app.get('/login/facebook',
   passport.authenticate('facebook'));
 
 app.get('/login/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login/facebook' }),
+  passport.authenticate('facebook', { failureRedirect: '/' }),
   function(req, res) {
     var session = require('crypto').createHash('sha1').update(req.user.id+Date.now()).digest('hex');
     var user = {fb_id:req.user.id, name:req.user.displayName, session:session}
@@ -101,10 +104,10 @@ app.get('/api/comments', function(req, res, next) {
   //console.log("inside /api/comments");
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-    // console.log("Connected correctly to server");
+    console.log("Connected correctly to server");
     dbGetAllComments(db,  function(comments) {
-      // console.log("returned comments")
-      // console.dir(comments);
+      console.log("returned comments")
+      console.dir(comments);
       db.close();
       res.send(comments);
     })
@@ -173,7 +176,7 @@ var dbInsertComment = function(comment, db, callback) {
   collection.insertOne(comment, function(err, result) {
     assert.equal(err, null);
     assert.equal(1, result.ops.length);
-    // console.log("Inserted 1 comment into the comment collection");
+    console.log("Inserted 1 comment into the comment collection");
     callback(result);
   });
 }
@@ -181,8 +184,8 @@ var dbInsertComment = function(comment, db, callback) {
 var dbGetAllComments = function(db, callback) {
     var collection = db.collection('comments');
     collection.find({}).sort('tstp', -1).toArray(function(err, docs){
-      // console.log("Found the following records");
-      // console.dir(docs);
+      console.log("Found the following records");
+      console.dir(docs);
       callback(docs);
     })
   }
