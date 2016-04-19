@@ -23,7 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(session({
   secret: process.env.SSECRET || config.session_secret,
-  cookie: { maxAge: 60000,httpOnly: false },
+  cookie: { maxAge: null,httpOnly: false },
   resave: false,
   saveUninitialized: false,
 }))
