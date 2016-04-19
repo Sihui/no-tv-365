@@ -123,17 +123,16 @@ app.post('/api/comments', function(req, res){
 });
 
 app.get('/api/progress', function(req, res){
+  console.log('hit get progress api')
   var progress = 0;
   fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
     .pipe(csv())
     .on('data', function(data) {
-      console.log('row', data.TV_HOURS)
       if(data.TV_HOURS === '0'){
         progress++;
       }
     })
     .on('end', function () {
-      console.log("done progress"+progress);
       res.send({progress:progress});
     })
 })

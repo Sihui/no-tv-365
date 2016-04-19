@@ -19799,14 +19799,14 @@ var Cal = (function (_React$Component) {
         rect.filter(function (d) {
           return d in data;
         }).attr("fill", function (d) {
-          if (!data[d]) {
+          if (data[d] !== 0 && data[d] !== '0' && !data[d]) {
             return "#fff";
           }
           return color(data[d]);
         }).attr("date", function (d) {
           return d;
         }).attr("data-title", function (d) {
-          return "TV Hours : " + Math.round(data[d] * 100);
+          return "TV Hours : " + data[d];
         });
         $("rect").tooltip({ container: 'body', html: true, placement: 'top' });
       });
@@ -20131,14 +20131,20 @@ var Progress = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(Progress.prototype), "constructor", this).call(this);
     this.getProgress = this.getProgress.bind(this);
-    this.progress = 0;
+    this.state = {
+      progress: _storesProgressStore2["default"].getProgress()
+    };
     ProgressActions.getProgress();
   }
 
   _createClass(Progress, [{
     key: "getProgress",
     value: function getProgress() {
-      this.progress = _storesProgressStore2["default"].getProgress();
+      console.log("getProgress");
+      this.setState({
+        progress: _storesProgressStore2["default"].getProgress()
+      });
+      console.log("getProgress end p:" + this.state.progress);
     }
   }, {
     key: "componentWillMount",
@@ -20157,8 +20163,8 @@ var Progress = (function (_React$Component) {
         "div",
         { className: "tv-progress" },
         "Progress: ",
-        this.progress,
-        " / 365"
+        this.state.progress,
+        "/365"
       );
     }
   }]);
@@ -20430,7 +20436,9 @@ var ProgressStore = (function (_EventEmitter) {
     value: function handleActions(action) {
       switch (action.type) {
         case "GET_PROGRESS":
-          this.progress = action.progress;
+          console.log('action' + action);
+          console.log('action' + action.progress.progress);
+          this.progress = action.progress.progress;
           this.emit("progress_change");
           break;
       }

@@ -89,13 +89,13 @@ export default class Cal extends React.Component {
 
       rect.filter(function(d) { return d in data; })
           .attr("fill", function(d) {
-            if(!data[d]){
+            if(data[d]!== 0 && data[d]!== '0' &&!data[d]){
               return "#fff"
             }
             return color(data[d]);
           })
           .attr("date", function(d) { return d; })
-        .attr("data-title", function(d) { return "TV Hours : "+Math.round(data[d]*100)});
+        .attr("data-title", function(d) { return "TV Hours : "+data[d]});
       $("rect").tooltip({container: 'body', html: true, placement:'top'});
     });
 

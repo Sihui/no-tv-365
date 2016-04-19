@@ -102,5 +102,7 @@ input, button, select, textarea {
     .RdYlGn .q10-11{fill:rgb(0,104,55)}
 
     .tv-progress{
-
+      float: right;
+      margin-right: 120px;
+      margin-top: 10px;
     }

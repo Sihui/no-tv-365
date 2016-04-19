@@ -6,12 +6,19 @@ export default class Progress extends React.Component{
   constructor() {
     super();
     this.getProgress = this.getProgress.bind(this);
-    this.progress = 0;
+    this.state = {
+      progress: ProgressStore.getProgress(),
+    };
     ProgressActions.getProgress();
   }
 
   getProgress(){
-    this.progress = ProgressStore.getProgress();
+    console.log("getProgress");
+    this.setState({
+      progress: ProgressStore.getProgress(),
+    });
+    console.log("getProgress end p:"+this.state.progress);
+
   }
 
   componentWillMount(){
@@ -25,7 +32,7 @@ export default class Progress extends React.Component{
   render(){
     return(
       <div className="tv-progress">
-        Progress: {this.progress} / 365
+        Progress: {this.state.progress}/365
       </div>
       );
   }

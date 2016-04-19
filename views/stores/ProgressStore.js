@@ -16,7 +16,9 @@ class ProgressStore extends EventEmitter {
   handleActions(action) {
     switch(action.type){
       case "GET_PROGRESS":
-        this.progress = action.progress;
+        console.log('action'+action);
+        console.log('action'+action.progress.progress);
+        this.progress = action.progress.progress;
         this.emit("progress_change");
         break;
     }
