@@ -21,9 +21,7 @@ export default class Layout extends React.Component {
         <Input name={name} fb_id={fb_id}/>
         <Comments/>
         <div>
-          // SNIP
             <GAInitiailizer />
-          // SNIP
         </div>
       </div>
       );
