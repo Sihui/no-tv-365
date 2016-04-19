@@ -8,6 +8,10 @@
     "type": "git",
     "url": "https://github.com/Sihui/no-tv-365"
   },
+  "engines": {
+    "node": "5.10.1",
+    "npm": "3.8.3",
+  },
   "main": "webpack.config.js",
   "dependencies": {
     "babel-loader": "^6.2.0",
@@ -40,8 +44,9 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
+    "start": "node app.js",
+    "heroku-prebuild": "npm install",
     "dev": "webpack-dev-server --content-base src --inline --hot",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
+    "dev2": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js",
   },
 }
