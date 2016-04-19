@@ -19665,7 +19665,7 @@ function getAllComments() {
   });
 }
 
-},{"../dispatcher":170}],164:[function(require,module,exports){
+},{"../dispatcher":171}],164:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -19694,7 +19694,7 @@ function getProgress() {
   });
 }
 
-},{"../dispatcher":170}],165:[function(require,module,exports){
+},{"../dispatcher":171}],165:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19985,6 +19985,7 @@ var Input = (function (_React$Component) {
         var c_class = "blur";
         var textarea_style = { pointerEvents: "none" };
         var login_msg = "login_show";
+        var logout_style = { display: "none" };
       }
       return _react2["default"].createElement(
         "div",
@@ -20006,6 +20007,11 @@ var Input = (function (_React$Component) {
             "button",
             { onClick: this.createComment.bind(this), className: "btn btn-primary", type: "button" },
             "Comment"
+          ),
+          _react2["default"].createElement(
+            "button",
+            { style: logout_style, className: "btn btn-warning", type: "button" },
+            "Logout"
           )
         )
       );
@@ -20022,6 +20028,65 @@ module.exports = Input;
 module.exports = exports["default"];
 
 },{"../actions/CommentActions":163,"react":162}],168:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var Json = (function (_React$Component) {
+  _inherits(Json, _React$Component);
+
+  _createClass(Json, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      console.log('add json');
+      var node = new PrettyJSON.view.Node({
+        el: $('#Json-info'),
+        data: info
+      });
+      //node.expandAll();
+      console.log('done json');
+    }
+  }]);
+
+  function Json() {
+    _classCallCheck(this, Json);
+
+    _get(Object.getPrototypeOf(Json.prototype), 'constructor', this).call(this);
+  }
+
+  _createClass(Json, [{
+    key: 'render',
+    value: function render() {
+      console.log('render json');
+      return _react2['default'].createElement('div', { id: 'Json-info', className: 'Json-info' });
+    }
+  }]);
+
+  return Json;
+})(_react2['default'].Component);
+
+exports['default'] = Json;
+
+module.exports = Json;
+module.exports = exports['default'];
+
+},{"react":162}],169:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20058,6 +20123,10 @@ var _Progress = require("./Progress");
 
 var _Progress2 = _interopRequireDefault(_Progress);
 
+var _Json = require("./Json");
+
+var _Json2 = _interopRequireDefault(_Json);
+
 var Layout = (function (_React$Component) {
   _inherits(Layout, _React$Component);
 
@@ -20070,12 +20139,12 @@ var Layout = (function (_React$Component) {
   _createClass(Layout, [{
     key: "render",
     value: function render() {
-
       var name = this.props.name;
       var fb_id = this.props.fb_id;
       return _react2["default"].createElement(
         "div",
         null,
+        _react2["default"].createElement(_Json2["default"], null),
         _react2["default"].createElement(_Cal2["default"], null),
         _react2["default"].createElement(_Progress2["default"], null),
         _react2["default"].createElement(_Input2["default"], { name: name, fb_id: fb_id }),
@@ -20092,7 +20161,7 @@ exports["default"] = Layout;
 module.exports = Layout;
 module.exports = exports["default"];
 
-},{"../pages/Comments":172,"./Cal":165,"./Input":167,"./Progress":169,"react":162}],169:[function(require,module,exports){
+},{"../pages/Comments":173,"./Cal":165,"./Input":167,"./Json":168,"./Progress":170,"react":162}],170:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20177,7 +20246,7 @@ exports["default"] = Progress;
 module.exports = Progress;
 module.exports = exports["default"];
 
-},{"../actions/ProgressActions":164,"../stores/ProgressStore":174,"react":162}],170:[function(require,module,exports){
+},{"../actions/ProgressActions":164,"../stores/ProgressStore":175,"react":162}],171:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20189,7 +20258,7 @@ var _flux = require("flux");
 exports["default"] = new _flux.Dispatcher();
 module.exports = exports["default"];
 
-},{"flux":3}],171:[function(require,module,exports){
+},{"flux":3}],172:[function(require,module,exports){
 "use strict";
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -20215,7 +20284,7 @@ var fb_id = data[1];
 
 _reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], { name: name, fb_id: fb_id }), app);
 
-},{"./components/Layout":168,"react":162,"react-dom":6}],172:[function(require,module,exports){
+},{"./components/Layout":169,"react":162,"react-dom":6}],173:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20305,7 +20374,7 @@ exports["default"] = Comments;
 module.exports = Comments;
 module.exports = exports["default"];
 
-},{"../actions/CommentActions":163,"../components/Comment":166,"../stores/CommentStore":173,"react":162}],173:[function(require,module,exports){
+},{"../actions/CommentActions":163,"../components/Comment":166,"../stores/CommentStore":174,"react":162}],174:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20387,7 +20456,7 @@ window.commentStore = commentStore;
 //commentStore.on("change", )
 module.exports = exports["default"];
 
-},{"../actions/CommentActions":163,"../dispatcher":170,"events":1}],174:[function(require,module,exports){
+},{"../actions/CommentActions":163,"../dispatcher":171,"events":1}],175:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20457,5 +20526,5 @@ window.progressStore = progressStore;
 //commentStore.on("change", )
 module.exports = exports["default"];
 
-},{"../actions/ProgressActions":164,"../dispatcher":170,"events":1}]},{},[171])(171)
+},{"../actions/ProgressActions":164,"../dispatcher":171,"events":1}]},{},[172])(172)
 });
