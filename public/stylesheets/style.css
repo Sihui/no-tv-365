@@ -1,12 +1,11 @@
 .vertical-center-parent{
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
+  min-height: 100vh; /* These two lines are counted as one :-)           max-width: 40%!important;*/
   background-color: #fff!important;
   display: flex;
   align-items: center;
 }
 .jumbotron .container {
-    max-width: 40%!important;
 }
 
 .blur{
@@ -56,6 +55,9 @@ input, button, select, textarea {
     border: 1px solid #e5e5e5;
     border-radius: .25rem;
     overflow: auto;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 .card-block {
     padding: 1.25rem;
@@ -63,8 +65,42 @@ input, button, select, textarea {
 
 .comment_div{
   overflow: auto;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  margin-top: 50px;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+
 .card-name{
   float: right;
 }
+
+  .calender-map {
+      font: 10px sans-serif;
+      shape-rendering: crispEdges;
+    }
+    .day {
+      stroke: #666;
+    }
+    .month {
+      fill: none;
+      stroke: #000;
+      stroke-width: 2px;
+    }
+    .RdYlGn .q0-11{fill:rgb(165,0,38)}
+    .RdYlGn .q1-{fill:rgb(215,48,39)}
+    .RdYlGn .q2-11{fill:rgb(244,109,67)}
+    .RdYlGn .q3-11{fill:rgb(253,174,97)}
+    .RdYlGn .q4-11{fill:rgb(254,224,139)}
+    .RdYlGn .q5-11{fill:rgb(255,255,191)}
+    .RdYlGn .q6-11{fill:rgb(217,239,139)}
+    .RdYlGn .q7-11{fill:rgb(166,217,106)}
+    .RdYlGn .q8-11{fill:rgb(102,189,99)}
+    .RdYlGn .q9-11{fill:rgb(26,152,80)}
+    .RdYlGn .q10-11{fill:rgb(0,104,55)}
+
+    .tv-progress{
+
+    }

@@ -2,6 +2,8 @@ import React from "react"
 
 import Comments from "../pages/Comments"
 import Input from "./Input"
+import Cal from "./Cal"
+import Progress from "./Progress"
 
 export default class Layout extends React.Component {
   render(){
@@ -10,8 +12,10 @@ export default class Layout extends React.Component {
     var fb_id = this.props.fb_id;
     return (
       <div>
+        <Cal/>
+        <Progress/>
         <Input name={name} fb_id={fb_id}/>
-        <Comments />
+        <Comments/>
       </div>
       );
   }
