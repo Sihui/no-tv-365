@@ -29,7 +29,7 @@ var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/myproject';
+var url = process.env.DBURL || 'mongodb://localhost:27017/myproject';
 
 const comment = {fb_id:1234, text: "good job!", date: Date.now(), fb_pic:"111"}
 
