@@ -20009,9 +20009,13 @@ var Input = (function (_React$Component) {
             "Comment"
           ),
           _react2["default"].createElement(
-            "button",
-            { style: logout_style, className: "btn btn-warning", type: "button" },
-            "Logout"
+            "a",
+            { href: "/logout" },
+            _react2["default"].createElement(
+              "button",
+              { style: logout_style, className: "btn btn-warning", type: "button" },
+              "Logout"
+            )
           )
         )
       );

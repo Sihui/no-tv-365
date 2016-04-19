@@ -34,7 +34,7 @@ export default class Input extends React.Component{
         <div className={c_class}>
           <textarea id="new-comment" style={textarea_style} className="form-control comment-area"></textarea>
           <button onClick={this.createComment.bind(this)} className="btn btn-primary" type="button">Comment</button>
-          <button style={logout_style} className="btn btn-warning" type="button">Logout</button>
+          <a href="/logout"><button style={logout_style} className="btn btn-warning" type="button">Logout</button></a>
         </div>
       </div>
       );

@@ -142,7 +142,7 @@ app.get('/api/progress', function(req, res){
 
 var port = process.env.PORT || 9000;
 app.listen(port, function () {
-  console.log('Example app listening on port 9000!');
+  console.log('App listening on port 9000!');
 });
 
 var dbInsertUser = function(user, db, callback){
