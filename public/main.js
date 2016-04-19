@@ -19665,7 +19665,185 @@ function getAllComments() {
   });
 }
 
-},{"../dispatcher":167}],164:[function(require,module,exports){
+},{"../dispatcher":170}],164:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.getProgress = getProgress;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _dispatcher = require("../dispatcher");
+
+var _dispatcher2 = _interopRequireDefault(_dispatcher);
+
+function getProgress() {
+  $.ajax({
+    type: 'GET',
+    url: '/api/progress'
+  }).done(function (progress) {
+    console.log("get progress success");
+    _dispatcher2['default'].dispatch({
+      type: "GET_PROGRESS",
+      progress: progress
+    });
+  }).fail(function (jqXhr) {
+    console.log("get progress fail");
+  });
+}
+
+},{"../dispatcher":170}],165:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var Cal = (function (_React$Component) {
+  _inherits(Cal, _React$Component);
+
+  function Cal() {
+    _classCallCheck(this, Cal);
+
+    _get(Object.getPrototypeOf(Cal.prototype), "constructor", this).apply(this, arguments);
+  }
+
+  _createClass(Cal, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log("mounted");
+      var width = 900,
+          height = 105,
+          cellSize = 12,
+          // cell size
+      week_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      var day = d3.time.format("%w"),
+          week = d3.time.format("%U"),
+          percent = d3.format(".1%"),
+          format = d3.time.format("%Y%m%d"),
+          parseDate = d3.time.format("%Y%m%d").parse;
+
+      var color = d3.scale.linear().range(["#44A340", '#D90429']).domain([0, 1]);
+
+      var svg = d3.select(".calender-map").selectAll("svg").data(d3.range(2016, 2018)).enter().append("svg").attr("width", '100%').attr("data-height", '0.5678').attr("viewBox", '0 0 900 105').attr("class", "RdYlGn").append("g").attr("transform", "translate(" + (width - cellSize * 53) / 2 + "," + (height - cellSize * 7 - 1) + ")");
+
+      svg.append("text").attr("transform", "translate(-38," + cellSize * 3.5 + ")rotate(-90)").style("text-anchor", "middle").text(function (d) {
+        return d;
+      });
+
+      for (var i = 0; i < 7; i++) {
+        svg.append("text").attr("transform", "translate(-5," + cellSize * (i + 1) + ")").style("text-anchor", "end").attr("dy", "-.25em").text(function (d) {
+          return week_days[i];
+        });
+      }
+
+      var rect = svg.selectAll(".day").data(function (d) {
+        return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+      }).enter().append("rect").attr("class", "day").attr("width", cellSize).attr("height", cellSize).attr("x", function (d) {
+        return week(d) * cellSize;
+      }).attr("y", function (d) {
+        return day(d) * cellSize;
+      }).attr("fill", '#fff').datum(format);
+
+      var legend = svg.selectAll(".legend").data(month).enter().append("g").attr("class", "legend").attr("transform", function (d, i) {
+        return "translate(" + ((i + 1) * 50 + 8) + ",0)";
+      });
+
+      legend.append("text").attr("class", function (d, i) {
+        return month[i];
+      }).style("text-anchor", "end").attr("dy", "-.25em").text(function (d, i) {
+        return month[i];
+      });
+
+      svg.selectAll(".month").data(function (d) {
+        return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+      }).enter().append("path").attr("class", "month").attr("id", function (d, i) {
+        return month[i];
+      }).attr("d", monthPath);
+
+      d3.csv("/files/tv_hours_data.csv", function (error, csv) {
+        console.log("7");
+        csv.forEach(function (d) {
+          d.TV_HOURS = parseInt(d.TV_HOURS);
+          //d.Date = d.Date;
+        });
+
+        var TV_HOURS_Max = d3.max(csv, function (d) {
+          return d.TV_HOURS;
+        });
+
+        var data = d3.nest().key(function (d) {
+          return d.Date;
+        }).rollup(function (d) {
+          return Math.sqrt(d[0].TV_HOURS / TV_HOURS_Max);
+        }).map(csv);
+
+        rect.filter(function (d) {
+          return d in data;
+        }).attr("fill", function (d) {
+          if (data[d] !== 0 && data[d] !== '0' && !data[d]) {
+            return "#fff";
+          }
+          return color(data[d]);
+        }).attr("date", function (d) {
+          return d;
+        }).attr("data-title", function (d) {
+          return "TV Hours : " + data[d];
+        });
+        $("rect").tooltip({ container: 'body', html: true, placement: 'top' });
+      });
+
+      function numberWithCommas(x) {
+        x = x.toString();
+        var pattern = /(-?\d+)(\d{3})/;
+        while (pattern.test(x)) x = x.replace(pattern, "$1,$2");
+        return x;
+      }
+
+      function monthPath(t0) {
+        var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+            d0 = +day(t0),
+            w0 = +week(t0),
+            d1 = +day(t1),
+            w1 = +week(t1);
+        return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize + "H" + w0 * cellSize + "V" + 7 * cellSize + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize + "H" + (w1 + 1) * cellSize + "V" + 0 + "H" + (w0 + 1) * cellSize + "Z";
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      console.log("render");
+      return _react2["default"].createElement("div", { className: "calender-map" });
+    }
+  }]);
+
+  return Cal;
+})(_react2["default"].Component);
+
+exports["default"] = Cal;
+
+module.exports = Cal;
+module.exports = exports["default"];
+
+},{"react":162}],166:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19748,7 +19926,7 @@ exports["default"] = Comment;
 module.exports = Comment;
 module.exports = exports["default"];
 
-},{"react":162}],165:[function(require,module,exports){
+},{"react":162}],167:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19843,7 +20021,7 @@ module.exports = Input;
 //,backgroundColor:" #b3b3cc"
 module.exports = exports["default"];
 
-},{"../actions/CommentActions":163,"react":162}],166:[function(require,module,exports){
+},{"../actions/CommentActions":163,"react":162}],168:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19872,6 +20050,14 @@ var _Input = require("./Input");
 
 var _Input2 = _interopRequireDefault(_Input);
 
+var _Cal = require("./Cal");
+
+var _Cal2 = _interopRequireDefault(_Cal);
+
+var _Progress = require("./Progress");
+
+var _Progress2 = _interopRequireDefault(_Progress);
+
 var Layout = (function (_React$Component) {
   _inherits(Layout, _React$Component);
 
@@ -19890,6 +20076,8 @@ var Layout = (function (_React$Component) {
       return _react2["default"].createElement(
         "div",
         null,
+        _react2["default"].createElement(_Cal2["default"], null),
+        _react2["default"].createElement(_Progress2["default"], null),
         _react2["default"].createElement(_Input2["default"], { name: name, fb_id: fb_id }),
         _react2["default"].createElement(_pagesComments2["default"], null)
       );
@@ -19904,7 +20092,92 @@ exports["default"] = Layout;
 module.exports = Layout;
 module.exports = exports["default"];
 
-},{"../pages/Comments":169,"./Input":165,"react":162}],167:[function(require,module,exports){
+},{"../pages/Comments":172,"./Cal":165,"./Input":167,"./Progress":169,"react":162}],169:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _storesProgressStore = require("../stores/ProgressStore");
+
+var _storesProgressStore2 = _interopRequireDefault(_storesProgressStore);
+
+var _actionsProgressActions = require("../actions/ProgressActions");
+
+var ProgressActions = _interopRequireWildcard(_actionsProgressActions);
+
+var Progress = (function (_React$Component) {
+  _inherits(Progress, _React$Component);
+
+  function Progress() {
+    _classCallCheck(this, Progress);
+
+    _get(Object.getPrototypeOf(Progress.prototype), "constructor", this).call(this);
+    this.getProgress = this.getProgress.bind(this);
+    this.state = {
+      progress: _storesProgressStore2["default"].getProgress()
+    };
+    ProgressActions.getProgress();
+  }
+
+  _createClass(Progress, [{
+    key: "getProgress",
+    value: function getProgress() {
+      console.log("getProgress");
+      this.setState({
+        progress: _storesProgressStore2["default"].getProgress()
+      });
+      console.log("getProgress end p:" + this.state.progress);
+    }
+  }, {
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      _storesProgressStore2["default"].on("progress_change", this.getProgress);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      _storesProgressStore2["default"].removeListener("progress_change", this.getProgress);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2["default"].createElement(
+        "div",
+        { className: "tv-progress" },
+        "Progress: ",
+        this.state.progress,
+        "/365"
+      );
+    }
+  }]);
+
+  return Progress;
+})(_react2["default"].Component);
+
+exports["default"] = Progress;
+
+module.exports = Progress;
+module.exports = exports["default"];
+
+},{"../actions/ProgressActions":164,"../stores/ProgressStore":174,"react":162}],170:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19916,7 +20189,7 @@ var _flux = require("flux");
 exports["default"] = new _flux.Dispatcher();
 module.exports = exports["default"];
 
-},{"flux":3}],168:[function(require,module,exports){
+},{"flux":3}],171:[function(require,module,exports){
 "use strict";
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -19939,9 +20212,10 @@ var name = data[0];
 var fb_id = data[1];
 //var comments = app.props.comments;
 //console.log("in main,js comments: " + comments);
+
 _reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], { name: name, fb_id: fb_id }), app);
 
-},{"./components/Layout":166,"react":162,"react-dom":6}],169:[function(require,module,exports){
+},{"./components/Layout":168,"react":162,"react-dom":6}],172:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20031,7 +20305,7 @@ exports["default"] = Comments;
 module.exports = Comments;
 module.exports = exports["default"];
 
-},{"../actions/CommentActions":163,"../components/Comment":164,"../stores/CommentStore":170,"react":162}],170:[function(require,module,exports){
+},{"../actions/CommentActions":163,"../components/Comment":166,"../stores/CommentStore":173,"react":162}],173:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20113,5 +20387,75 @@ window.commentStore = commentStore;
 //commentStore.on("change", )
 module.exports = exports["default"];
 
-},{"../actions/CommentActions":163,"../dispatcher":167,"events":1}]},{},[168])(168)
+},{"../actions/CommentActions":163,"../dispatcher":170,"events":1}],174:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _events = require("events");
+
+var _dispatcher = require("../dispatcher");
+
+var _dispatcher2 = _interopRequireDefault(_dispatcher);
+
+var _actionsProgressActions = require("../actions/ProgressActions");
+
+var ProgressActions = _interopRequireWildcard(_actionsProgressActions);
+
+var ProgressStore = (function (_EventEmitter) {
+  _inherits(ProgressStore, _EventEmitter);
+
+  function ProgressStore() {
+    _classCallCheck(this, ProgressStore);
+
+    _get(Object.getPrototypeOf(ProgressStore.prototype), "constructor", this).call(this);
+    this.progress = 0;
+  }
+
+  _createClass(ProgressStore, [{
+    key: "getProgress",
+    value: function getProgress() {
+      return this.progress;
+    }
+  }, {
+    key: "handleActions",
+    value: function handleActions(action) {
+      switch (action.type) {
+        case "GET_PROGRESS":
+          console.log('action' + action);
+          console.log('action' + action.progress.progress);
+          this.progress = action.progress.progress;
+          this.emit("progress_change");
+          break;
+      }
+    }
+  }]);
+
+  return ProgressStore;
+})(_events.EventEmitter);
+
+var progressStore = new ProgressStore();
+_dispatcher2["default"].register(progressStore.handleActions.bind(progressStore));
+window.dispatcher = _dispatcher2["default"];
+exports["default"] = progressStore;
+
+window.progressStore = progressStore;
+//commentStore.on("change", )
+module.exports = exports["default"];
+
+},{"../actions/ProgressActions":164,"../dispatcher":170,"events":1}]},{},[171])(171)
 });

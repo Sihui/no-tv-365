@@ -13,7 +13,9 @@ module.exports = React.createClass({
           <link rel="stylesheet" href="/stylesheets/style.css" />
           <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
           <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-            <title>No TV 365</title>
+          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+          <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+          <title>No TV 365</title>
           </head>
           <body>
             <div className="jumbotron vertical-center-parent">
@@ -25,10 +27,3 @@ module.exports = React.createClass({
     );
   }
 });
-//          <link rel="stylesheet" type="text/css" href="style.css"/>
-
-//<form action = "/login/facebook" method = "post">
-//  <input type="submit" name="Login" value="Login" />
-//</form>
-//<p>{fb_id} - {name}</p>
-

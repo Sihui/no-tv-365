@@ -5,6 +5,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./configuration/config');
 var session = require('express-session')
 var path = require('path');
+var csv = require('csv-parser')
+var fs = require('fs')
 
 var app = express();
 app.set('view engine', 'js');
@@ -119,6 +121,21 @@ app.post('/api/comments', function(req, res){
     })
   });
 });
+
+app.get('/api/progress', function(req, res){
+  console.log('hit get progress api')
+  var progress = 0;
+  fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
+    .pipe(csv())
+    .on('data', function(data) {
+      if(data.TV_HOURS === '0'){
+        progress++;
+      }
+    })
+    .on('end', function () {
+      res.send({progress:progress});
+    })
+})
 
 var port = process.env.PORT || 9000;
 app.listen(port, function () {
