@@ -8,6 +8,6 @@ var info = {
   Msg:"Plzzz show your suppert by leaving a comment! :D",
   SiteInfo:{
     Author: "Sihui H.",
-    Tech: ["ReactJS", "NodeJS"]
+    Tech: ["ReactJS", "NodeJS", "d3JS"]
   }
 }

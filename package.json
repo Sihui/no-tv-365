@@ -1,7 +1,13 @@
 {
   "name": "no-tv-365",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "author": "Sihui Huang",
+  "license": "MIT",
+  "description": "A Node.js app using Express 4, React.js and d3.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sihui/no-tv-365"
+  },
   "main": "webpack.config.js",
   "dependencies": {
     "babel-loader": "^6.2.0",
@@ -38,6 +44,4 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
   },
-  "author": "",
-  "license": "ISC"
 }

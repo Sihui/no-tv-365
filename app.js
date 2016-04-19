@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(session({
-  secret: config.session_secret,
+  secret: process.env.SSECRET || config.session_secret,
   cookie: { maxAge: 60000,httpOnly: false },
   resave: false,
   saveUninitialized: false,
@@ -50,9 +50,9 @@ app.get("/", function(request, response) {
 });
 
 passport.use(new FacebookStrategy({
-    clientID: config.facebook_app_id,
-    clientSecret: config.facebook_app_secret,
-    callbackURL: config.callback_url
+    clientID: process.env.FB_APP_ID || config.facebook_app_id,
+    clientSecret: process.env.FB_APP_SECRET || config.facebook_app_secret,
+    callbackURL: process.env.CALLBACK_URL || config.callback_url
   },
   function(accessToken, refreshToken, profile, cb) {
     cb(null, profile);
