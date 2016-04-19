@@ -185,6 +185,7 @@ var dbGetAllComments = function(db, callback) {
     var collection = db.collection('comments');
     console.log('collection:'+collection.find({}));
     collection.find().sort('tstp', -1).toArray(function(err, docs){
+      console.log("err"+err);
       console.log("Found the following records");
       console.dir(docs);
       callback(docs);
