@@ -8,6 +8,7 @@ var info = {
   Msg:"Plzzz show your suppert by leaving a comment! :D",
   SiteInfo:{
     Author: "Sihui H.",
-    Tech: ["ReactJS", "NodeJS", "d3JS"]
+    Tech: ["ReactJS", "NodeJS", "d3JS"],
+    Repo: "https://github.com/Sihui/no-tv-365"
   }
 }

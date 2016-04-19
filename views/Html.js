@@ -12,8 +12,8 @@ module.exports = React.createClass({
           <head>
           <link rel="stylesheet" href="/stylesheets/style.css" />
           <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
+          <link rel="shortcut icon" href="/imgs/favicon.png" />
           <script src="/javascripts/info.js"></script>
-
           <title>No TV 365</title>
           </head>
           <body>
