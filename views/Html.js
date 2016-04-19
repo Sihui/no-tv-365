@@ -24,7 +24,7 @@ module.exports = React.createClass({
             <script src="/javascripts/pretty-json/underscore-min.js"></script>
             <script src="/javascripts/pretty-json/backbone-min.js"></script>
             <script src="/javascripts/pretty-json/pretty-json-min.js"></script>
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
             <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
             <script src="/main.js"></script>
