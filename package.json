@@ -10,7 +10,7 @@
   },
   "engines": {
     "node": "5.10.1",
-    "npm": "3.8.3",
+    "npm": "3.8.3"
   },
   "main": "webpack.config.js",
   "dependencies": {
@@ -47,6 +47,6 @@
     "start": "node app.js",
     "heroku-prebuild": "npm install",
     "dev": "webpack-dev-server --content-base src --inline --hot",
-    "dev2": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js",
+    "dev2": "browserify -t babelify --standalone main views/main.js -o public/main.js && node app.js"
   },
 }
