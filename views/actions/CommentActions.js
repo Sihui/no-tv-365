@@ -1,14 +1,20 @@
 import dispatcher from "../dispatcher";
 
-export function createComment(comment) {
+export function createComment(text, name, fb_id) {
+  var d = new Date();
+  var formatted_date = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+  var time = d.getHours() + ":" + d.getMinutes();
+
   $.ajax({
     type: 'POST',
     url: '/api/comments',
     data: {
-    fb_id: 1234,
-    text: comment,
-    date: Date.now(),
-    fb_pic: '111' }
+    fb_id: fb_id,
+    text: text,
+    name: name,
+    tstp: Date.now(),
+    date: formatted_date,
+    time:time}
   })
     .done(() => {
       console.log("create comment success")

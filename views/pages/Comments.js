@@ -35,7 +35,7 @@ export default class Comments extends React.Component{
     });
     return(
       <div>
-        <ul>{Comments}</ul>
+        {Comments}
       </div>
       );
   }

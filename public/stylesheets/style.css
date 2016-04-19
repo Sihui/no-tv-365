@@ -1,0 +1,70 @@
+.vertical-center-parent{
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  background-color: #fff!important;
+  display: flex;
+  align-items: center;
+}
+.jumbotron .container {
+    max-width: 40%!important;
+}
+
+.blur{
+    position: relative;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    filter: blur(1.5px);
+    -webkit-filter: blur(1.5px);
+    -webkit-filter: blur(1.5px);
+  -moz-filter: blur(1.5px);
+  -o-filter: blur(1.5px);
+  -ms-filter: blur(1.5px);
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' ><filter id='svgMask'><feGaussianBlur stdDeviation='10' /></filter></svg>#svgMask");
+  z-index: -1;
+}
+.login_hide{
+  display: none;
+}
+.login_show{
+  position: absolute;
+}
+#app{
+  z-index: 0;
+}
+.login_img {
+    height: 75px;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+a.menu_links { cursor: pointer; }
+textarea.form-control {
+    height: 200px !important;
+    font-size: 21px;
+}
+input, button, select, textarea {
+    float: right !important;
+    margin-top: 10px !important;
+}
+.card {
+    position: relative;
+    display: block;
+    margin-bottom: .75rem;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: .25rem;
+    overflow: auto;
+}
+.card-block {
+    padding: 1.25rem;
+}
+
+.comment_div{
+  overflow: auto;
+  margin-bottom: 15px;
+}
+.card-name{
+  float: right;
+}

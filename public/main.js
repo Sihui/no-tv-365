@@ -19603,33 +19603,39 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":30}],163:[function(require,module,exports){
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createComment = createComment;
 exports.deleteComment = deleteComment;
 exports.getAllComments = getAllComments;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _dispatcher = require("../dispatcher");
 
 var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-function createComment(comment) {
+function createComment(text, name, fb_id) {
+  var d = new Date();
+  var formatted_date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+  var time = d.getHours() + ":" + d.getMinutes();
+
   $.ajax({
     type: 'POST',
     url: '/api/comments',
     data: {
-      fb_id: 1234,
-      text: comment,
-      date: Date.now(),
-      fb_pic: '111' }
+      fb_id: fb_id,
+      text: text,
+      name: name,
+      tstp: Date.now(),
+      date: formatted_date,
+      time: time }
   }).done(function () {
     console.log("create comment success");
-    _dispatcher2['default'].dispatch({
+    _dispatcher2["default"].dispatch({
       type: "CREATE_COMMENT"
     });
   }).fail(function (jqXhr) {
@@ -19638,7 +19644,7 @@ function createComment(comment) {
 }
 
 function deleteComment(id) {
-  _dispatcher2['default'].dispatch({
+  _dispatcher2["default"].dispatch({
     type: "DELETE_COMMENT",
     id: id
   });
@@ -19650,7 +19656,7 @@ function getAllComments() {
     url: '/api/comments'
   }).done(function (comments) {
     console.log("get all success, comments:" + comments);
-    _dispatcher2['default'].dispatch({
+    _dispatcher2["default"].dispatch({
       type: "GET_ALL_COMMENTS",
       comments: comments
     });
@@ -19694,14 +19700,42 @@ var Comment = (function (_React$Component) {
     value: function render() {
       var _props = this.props;
       var date = _props.date;
+      var time = _props.time;
       var text = _props.text;
+      var name = _props.name;
+      var fb_id = _props.fb_id;
 
+      console.log("name:" + name);
+      var imgurl = "http://graph.facebook.com/" + fb_id + "/picture?type=square";
+      var formatted_name = name;
+      if (name) {
+        var split_name = name.split(" ");
+        if (split_name.length >= 2) formatted_name = split_name[0] + " " + split_name[split_name.length - 1][0] + '.';
+      }
       return _react2["default"].createElement(
-        "li",
-        null,
-        text,
-        " - ",
-        date
+        "div",
+        { className: "card" },
+        _react2["default"].createElement(
+          "div",
+          { className: "card-block" },
+          _react2["default"].createElement(
+            "p",
+            { className: "card-text" },
+            text
+          ),
+          _react2["default"].createElement(
+            "p",
+            { className: "card-name" },
+            "-",
+            formatted_name,
+            " @",
+            time,
+            " ",
+            date,
+            " ",
+            _react2["default"].createElement("img", { className: "thubmnail", src: imgurl })
+          )
+        )
       );
     }
   }]);
@@ -19753,20 +19787,48 @@ var Input = (function (_React$Component) {
   _createClass(Input, [{
     key: "createComment",
     value: function createComment() {
-      var newComment = document.getElementById('new-comment').value;
-      CommentActions.createComment(newComment);
+      var text = document.getElementById('new-comment').value;
+      var name = this.props.name;
+      var fb_id = this.props.fb_id;
+      CommentActions.createComment(text, name, fb_id);
     }
   }, {
     key: "render",
     value: function render() {
+
+      var name = this.props.name;
+      var fb_id = this.props.fb_id;
+
+      if (name !== "undefined") {
+        var c_class = "";
+        var textarea_style = {};
+        var login_msg = "login_hide";
+      } else {
+        var c_class = "blur";
+        var textarea_style = { pointerEvents: "none" };
+        var login_msg = "login_show";
+      }
       return _react2["default"].createElement(
         "div",
-        null,
-        _react2["default"].createElement("input", { id: "new-comment" }),
+        { className: "comment_div" },
         _react2["default"].createElement(
-          "button",
-          { onClick: this.createComment.bind(this) },
-          "Create!"
+          "div",
+          { className: login_msg },
+          _react2["default"].createElement(
+            "a",
+            { href: "/login/facebook" },
+            _react2["default"].createElement("img", { className: "login_img", src: "/imgs/facebook-login-blue.png" })
+          )
+        ),
+        _react2["default"].createElement(
+          "div",
+          { className: c_class },
+          _react2["default"].createElement("textarea", { id: "new-comment", style: textarea_style, className: "form-control comment-area" }),
+          _react2["default"].createElement(
+            "button",
+            { onClick: this.createComment.bind(this), className: "btn btn-primary", type: "button" },
+            "Comment"
+          )
         )
       );
     }
@@ -19778,6 +19840,7 @@ var Input = (function (_React$Component) {
 exports["default"] = Input;
 
 module.exports = Input;
+//,backgroundColor:" #b3b3cc"
 module.exports = exports["default"];
 
 },{"../actions/CommentActions":163,"react":162}],166:[function(require,module,exports){
@@ -19821,10 +19884,13 @@ var Layout = (function (_React$Component) {
   _createClass(Layout, [{
     key: "render",
     value: function render() {
+
+      var name = this.props.name;
+      var fb_id = this.props.fb_id;
       return _react2["default"].createElement(
         "div",
         null,
-        _react2["default"].createElement(_Input2["default"], null),
+        _react2["default"].createElement(_Input2["default"], { name: name, fb_id: fb_id }),
         _react2["default"].createElement(_pagesComments2["default"], null)
       );
     }
@@ -19868,9 +19934,12 @@ var _componentsLayout = require("./components/Layout");
 var _componentsLayout2 = _interopRequireDefault(_componentsLayout);
 
 var app = document.getElementById("app");
+var data = app.getAttribute("data").split("|");
+var name = data[0];
+var fb_id = data[1];
 //var comments = app.props.comments;
 //console.log("in main,js comments: " + comments);
-_reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], null), app);
+_reactDom2["default"].render(_react2["default"].createElement(_componentsLayout2["default"], { name: name, fb_id: fb_id }), app);
 
 },{"./components/Layout":166,"react":162,"react-dom":6}],169:[function(require,module,exports){
 "use strict";
@@ -19949,11 +20018,7 @@ var Comments = (function (_React$Component) {
       return _react2["default"].createElement(
         "div",
         null,
-        _react2["default"].createElement(
-          "ul",
-          null,
-          Comments
-        )
+        Comments
       );
     }
   }]);
