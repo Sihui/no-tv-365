@@ -19948,7 +19948,7 @@ var Comment = (function (_React$Component) {
       var fb_id = _props.fb_id;
 
       console.log("name:" + name);
-      var imgurl = "http://graph.facebook.com/" + fb_id + "/picture?type=square";
+      var imgurl = "https://graph.facebook.com/" + fb_id + "/picture?type=square";
       var formatted_name = name;
       if (name) {
         var split_name = name.split(" ");
@@ -20236,9 +20236,7 @@ var Layout = (function (_React$Component) {
         _react2["default"].createElement(
           "div",
           null,
-          "// SNIP",
-          _react2["default"].createElement(GAInitiailizer, null),
-          "// SNIP"
+          _react2["default"].createElement(GAInitiailizer, null)
         )
       );
     }

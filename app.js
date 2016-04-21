@@ -150,20 +150,20 @@ var dbInsertUser = function(user, db, callback){
   var collection = db.collection('users');
   collection.count({fb_id: user.fb_id}, function (err, count){
       if(count>0){
-          console.log("user exists");
+          // console.log("user exists");
           //document exists });
           collection.updateOne({ fb_id : user.fb_id }
             , { $set: { name:user.name, session:user.session} }, function(err, result) {
-            assert.equal(err, null);
-            assert.equal(1, result.result.n);
-            console.log("Updated user data");
+            // assert.equal(err, null);
+            // assert.equal(1, result.result.n);
+            // console.log("Updated user data");
             callback(result);
           });
       }else{
         collection.insertOne(user, function(err, result) {
-          assert.equal(err, null);
-          assert.equal(1, result.ops.length);
-          console.log("Inserted 1 user into the users collection");
+          // assert.equal(err, null);
+          // assert.equal(1, result.ops.length);
+          // console.log("Inserted 1 user into the users collection");
           callback(result);
         });
       }
@@ -174,25 +174,20 @@ var dbInsertComment = function(comment, db, callback) {
   var collection = db.collection('comments');
   // Insert some documents
   collection.insertOne(comment, function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.ops.length);
-    console.log("Inserted 1 comment into the comment collection");
+    // assert.equal(err, null);
+    // assert.equal(1, result.ops.length);
+    // console.log("Inserted 1 comment into the comment collection");
     callback(result);
   });
 }
 
 var dbGetAllComments = function(db, callback) {
     var collection = db.collection('comments');
-<<<<<<< HEAD
-    console.log('collection:'+collection.find({}));
+    // console.log('collection:'+collection.find({}));
     collection.find({}).sort({'tstp': -1}).toArray(function(err, docs){
-      console.log("err"+err);
-=======
-    console.log('collection:'+collection.find());
-    collection.find().sort('tstp', -1).toArray(function(err, docs){
->>>>>>> dug-db
-      console.log("Found the following records");
-      console.dir(docs);
+      // console.log("err"+err);
+      // console.log("Found the following records"+docs);
+      // console.dir(docs);
       callback(docs);
     })
   }
