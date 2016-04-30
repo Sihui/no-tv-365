@@ -74,17 +74,15 @@ export default class Cal extends React.Component {
         .attr("d", monthPath);
 
     d3.csv("/files/tv_hours_data.csv", function(error, csv) {
-      console.log("7");
       csv.forEach(function(d) {
         d.TV_HOURS = parseInt(d.TV_HOURS);
-        //d.Date = d.Date;
       });
 
      var TV_HOURS_Max = d3.max(csv, function(d) { return d.TV_HOURS; });
 
       var data = d3.nest()
         .key(function(d) { return d.Date; })
-        .rollup(function(d) { return  Math.sqrt(d[0].TV_HOURS / TV_HOURS_Max); })
+        .rollup(function(d) { return  d[0].TV_HOURS}) //Math.sqrt( / TV_HOURS_Max);
         .map(csv);
 
       rect.filter(function(d) { return d in data; })

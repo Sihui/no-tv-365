@@ -19844,10 +19844,8 @@ var Cal = (function (_React$Component) {
       }).attr("d", monthPath);
 
       d3.csv("/files/tv_hours_data.csv", function (error, csv) {
-        console.log("7");
         csv.forEach(function (d) {
           d.TV_HOURS = parseInt(d.TV_HOURS);
-          //d.Date = d.Date;
         });
 
         var TV_HOURS_Max = d3.max(csv, function (d) {
