@@ -1,6 +1,6 @@
 var info = {
   Challenge:"No TV 365 Days",
-  Details:"Can not watch TV by myself for 365 days!",
+  Details:"Can not watch TV by myself for 365 days continuously!",
   Motivation:"TV has became one of my biggest productivity killers :|",
   Excluded:["Tutorials", "MV for no more than 2 hrs/wk" ],
   Punishment:"Pay Chloe $15 for every hour that breaks the rule",
