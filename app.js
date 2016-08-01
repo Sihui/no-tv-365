@@ -128,11 +128,17 @@ app.post('/api/comments', function(req, res){
 app.get('/api/progress', function(req, res){
   console.log('hit get progress api')
   var progress = 0;
+  var date = new Date();
+  var formattedDate = '' + date.getFullYear() + (date.getMonth() + 1) + date.getDate();
   fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
     .pipe(csv())
     .on('data', function(data) {
+      if (data.Date === formattedDate)
+        break;
       if(data.TV_HOURS === '0'){
         progress++;
+      } else {
+        progress = 0;
       }
     })
     .on('end', function () {
