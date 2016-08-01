@@ -134,7 +134,7 @@ app.get('/api/progress', function(req, res){
     .pipe(csv())
     .on('data', function(data) {
       if (data.Date === formattedDate)
-        break;
+        continue;
       if(data.TV_HOURS === '0'){
         progress++;
       } else {
