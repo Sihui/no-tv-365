@@ -133,12 +133,12 @@ app.get('/api/progress', function(req, res){
   fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
     .pipe(csv())
     .on('data', function(data) {
-      if (data.Date === formattedDate)
-        continue;
-      if(data.TV_HOURS === '0'){
-        progress++;
-      } else {
-        progress = 0;
+      if (data.Date < formattedDate) {
+        if(data.TV_HOURS === '0'){
+          progress++;
+        } else {
+          progress = 0;
+        }
       }
     })
     .on('end', function () {
