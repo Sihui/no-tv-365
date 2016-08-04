@@ -8,7 +8,6 @@ export default class Comment extends React.Component{
 
   render(){
     const { date, time, text, name, fb_id } = this.props;
-    console.log("name:"+name)
     var imgurl = "https://graph.facebook.com/" + fb_id + "/picture?type=square";
     var formatted_name = name;
     if(name){
