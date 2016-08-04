@@ -78,7 +78,6 @@ app.get('/login/facebook/callback',
   function(req, res) {
     var session = require('crypto').createHash('sha1').update(req.user.id+Date.now()).digest('hex');
     var user = {fb_id:req.user.id, name:req.user.displayName, session:session}
-    console.log("USER:" + user)
     //save hash to session and database
     MongoClient.connect(url, function(err, db) {
       assert.equal(null, err);
@@ -133,6 +132,9 @@ app.get('/api/progress', function(req, res){
   fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
     .pipe(csv())
     .on('data', function(data) {
+      console.error('data.Date',data.Date)
+      console.error('formattedDate',formattedDate)
+      console.error('progress',progress)
       if (data.Date < formattedDate) {
         if(data.TV_HOURS === '0'){
           progress++;
