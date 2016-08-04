@@ -139,7 +139,7 @@ app.get('/api/progress', function(req, res){
         if(data.TV_HOURS === '0'){
           progress++;
         }
-        progress = data.Date
+        progress = formattedDate
       }
     })
     .on('end', function () {
