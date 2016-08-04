@@ -128,7 +128,12 @@ app.get('/api/progress', function(req, res){
   console.log('hit get progress api')
   var progress = 0;
   var date = new Date();
-  var formattedDate = '' + date.getFullYear() + (date.getMonth() + 1) + date.getDate();
+  var dd = date.getDate();
+  var mm = date.getMonth() + 1;
+  var yyyy = date.getFullYear();
+  if(dd<10) dd='0'+dd;
+  if(mm<10) mm='0'+mm;
+  var formattedDate = yyyy+mm+dd;
   fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
     .pipe(csv())
     .on('data', function(data) {
@@ -138,8 +143,9 @@ app.get('/api/progress', function(req, res){
       if (data.Date < formattedDate) {
         if(data.TV_HOURS === '0'){
           progress++;
+        } else {
+          progress = 0;
         }
-        progress = formattedDate
       }
     })
     .on('end', function () {
