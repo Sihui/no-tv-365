@@ -137,9 +137,6 @@ app.get('/api/progress', function(req, res){
   fs.createReadStream(__dirname + '/public/files/tv_hours_data.csv')
     .pipe(csv())
     .on('data', function(data) {
-      console.log('data.Date'+data.Date)
-      console.log('formattedDate'+formattedDate)
-      console.log('progress'+progress)
       if (data.Date < formattedDate) {
         if(data.TV_HOURS === '0'){
           progress++;
@@ -149,7 +146,7 @@ app.get('/api/progress', function(req, res){
       }
     })
     .on('end', function () {
-      res.send({progress:progress});
+      res.send({progress:formattedDate});
     })
 })
 
