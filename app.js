@@ -146,7 +146,7 @@ app.get('/api/progress', function(req, res){
       }
     })
     .on('end', function () {
-      res.send({progress:formattedDate});
+      res.send({progress:progress});
     })
 })
 
