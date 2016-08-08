@@ -141,7 +141,7 @@ app.get('/api/progress', function(req, res){
         if(data.TV_HOURS == '0' ){
           progress++;
         } else {
-          progress = 0;
+          progress = data.TV_HOURS;
         }
       }
     })
