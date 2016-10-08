@@ -128,9 +128,9 @@ app.get('/api/progress', function(req, res){
   console.log('hit get progress api')
   var progress = 0;
   var date = new Date();
-  var dd = date.getDate();
-  var mm = date.getMonth() + 1;
-  var yyyy = date.getFullYear();
+  var dd = date.getDate().toString();
+  var mm = (date.getMonth() + 1).toString();
+  var yyyy = date.getFullYear().toString();
   if(dd<10) dd='0'+dd;
   if(mm<10) mm='0'+mm;
   var formattedDate = yyyy+mm+dd;
@@ -146,7 +146,7 @@ app.get('/api/progress', function(req, res){
       }
     })
     .on('end', function () {
-      res.send({progress:formattedDate});
+      res.send({progress:progress});
     })
 })
 
