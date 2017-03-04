@@ -19,7 +19,7 @@ export default class Cal extends React.Component {
         .domain([0, 1])
 
     var svg = d3.select(".calender-map").selectAll("svg")
-        .data(d3.range(2016,2018))
+        .data(d3.range(2016,2019))
       .enter().append("svg")
         .attr("width", '100%')
         .attr("data-height", '0.5678')
